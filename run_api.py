@@ -1,5 +1,5 @@
 import os
-from app.main import create_app, db
+from api.main import create_app, db
 
 if __name__ == "__main__":
     app = create_app()
