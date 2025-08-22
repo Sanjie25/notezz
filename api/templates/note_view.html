@@ -1,0 +1,16 @@
+
+
+{% extends 'base.html' %}
+
+{% block header %}
+<h1>{% block title %}{{ note.title }}{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+  Created by {{ author[0].username }}<br>
+  created: {{ note.created_at }}, update: {{ note.updated_at }}
+  <p>{{ note.body }}</p>
+  <a href="{{ url_for("notes.index") }}"><button>Go to index</button></a>
+  <a href="{{ url_for("notes.delete_note", note_id=note.id) }}"><button>Delete NOTE</button></a>
+  <a href="{{ url_for("notes.edit_note", note_id=note.id) }}"><button>Edit NOTE</button></a>
+{% endblock %}

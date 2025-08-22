@@ -1,0 +1,52 @@
+diff --git a/README.md b/README.md
+index 9c9c430..d1a8414 100644
+--- a/README.md
++++ b/README.md
+@@ -35,6 +35,11 @@ SQLALCHEMY_DATABASE_URI=mysql+pymysql://super_user:password@localhost/notezz
+ 
+ # Running the app
+ 
++- python3 -m venv .venv
++- source .venv/bin/activate
++- brew install mysql
++- brew services start mysql
++- brew services list
+ - Install the libraries with `pip install -r requirements.txt`
+ - Then run the app with `python run.py`
+ 
+diff --git a/app/__pycache__/blueprints.cpython-313.pyc b/app/__pycache__/blueprints.cpython-313.pyc
+index ef5df5d..3e933f4 100644
+Binary files a/app/__pycache__/blueprints.cpython-313.pyc and b/app/__pycache__/blueprints.cpython-313.pyc differ
+diff --git a/app/__pycache__/database_models.cpython-313.pyc b/app/__pycache__/database_models.cpython-313.pyc
+index 08925d0..177d76a 100644
+Binary files a/app/__pycache__/database_models.cpython-313.pyc and b/app/__pycache__/database_models.cpython-313.pyc differ
+diff --git a/app/__pycache__/notes.cpython-313.pyc b/app/__pycache__/notes.cpython-313.pyc
+index 953aaa6..7101708 100644
+Binary files a/app/__pycache__/notes.cpython-313.pyc and b/app/__pycache__/notes.cpython-313.pyc differ
+diff --git a/requirements.txt b/requirements.txt
+index b363704..45f4c4d 100644
+--- a/requirements.txt
++++ b/requirements.txt
+@@ -1,3 +1,4 @@
++cryptography
+ flask
+ flask-sqlalchemy
+ flask-login
+diff --git a/run.py b/run.py
+index 585207e..56c12e1 100644
+--- a/run.py
++++ b/run.py
+@@ -1,3 +1,4 @@
++import os
+ from app.main import create_app, db
+ 
+ if __name__ == "__main__":
+@@ -6,5 +7,7 @@ if __name__ == "__main__":
+     with app.app_context():
+         db.create_all()
+ 
+-    app.run(debug=True, host="0.0.0.0")
++    port = int(os.environ.get("PORT", 12345))
++    host = os.environ.get("HOST", "127.0.0.1")
++    app.run(debug=True, host=host, port=port)
+ 

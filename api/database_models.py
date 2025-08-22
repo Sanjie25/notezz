@@ -1,8 +1,9 @@
 from datetime import datetime
 from flask_login import UserMixin
-from sqlalchemy import select
+
+# from sqlalchemy import select
 from werkzeug.security import generate_password_hash, check_password_hash
-from app.main import db
+from api.main import db
 
 __all__ = ["User", "Note", "Tag"]
 
@@ -116,3 +117,10 @@ class Invited(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True, nullable=False, index=True)
     created_at = db.Column(db.DateTime, default=datetime.now)
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "username": self.username,
+            "created_at": self.created_at,
+        }

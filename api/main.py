@@ -33,7 +33,7 @@ def create_app():
     login_manager.login_message = "Please log in to access this page."
     login_manager.session_protection = "strong"
 
-    from app.database_models import User
+    from api.database_models import User
 
     @login_manager.user_loader
     def load_user(user_id):
@@ -43,11 +43,11 @@ def create_app():
     # def index():
     #     return "index"
 
-    from app.blueprints import auth_bp
+    from api.blueprints import auth_bp
 
     app.register_blueprint(auth_bp)
 
-    from app.notes import notes_bp
+    from api.notes import notes_bp
 
     app.register_blueprint(notes_bp)
     return app

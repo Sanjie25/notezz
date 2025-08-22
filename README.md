@@ -35,6 +35,11 @@ SQLALCHEMY_DATABASE_URI=mysql+pymysql://super_user:password@localhost/notezz
 
 # Running the app
 
+- python3 -m venv .venv
+- source .venv/bin/activate
+- brew install mysql
+- brew services start mysql
+- brew services list
 - Install the libraries with `pip install -r requirements.txt`
 - Then run the app with `python run.py`
 

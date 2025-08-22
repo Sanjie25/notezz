@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Register{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+  <a href="{{ url_for('auth.register') }}/admin"><button> Register as Admin </button></a>
+  <a href="{{ url_for('auth.register') }}/collaborator"><button> Register as Collaborator </button></a>
+{% endblock %}

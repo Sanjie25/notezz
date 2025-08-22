@@ -1,8 +1,9 @@
-from flask import Blueprint, request, flash, render_template, redirect, url_for
+from flask import Blueprint, jsonify, request, flash, render_template, redirect, url_for
 from app.main import db
 from flask_login import current_user, login_required
 from app.database_models import Note, User, Tag
 from app.blueprints import admin_required
+from app.schemas import note_schema
 
 notes_bp = Blueprint("notes", __name__)
 
@@ -43,6 +44,14 @@ def get_note(note_id):
     author = db.session.execute(db.select(User).filter_by(id=note.author_id)).fetchone()
 
     return render_template("note_view.html", note=note, author=author)
+
+
+@notes_bp.route("/notes_json/<int:note_id>", methods=["GET"])
+def get_notejson(note_id):
+    note = Note.query.get_or_404(note_id)
+
+    # return jsonify(note.to_dict())
+    return note_schema.dump(note)
 
 
 @notes_bp.route("/delete/<int:note_id>")
