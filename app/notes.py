@@ -2,6 +2,7 @@ from flask import Blueprint, request, flash, render_template, redirect, url_for
 from app.main import db
 from flask_login import current_user, login_required
 from app.database_models import Note, User
+from app.blueprints import admin_required
 
 notes_bp = Blueprint("notes", __name__)
 
@@ -36,20 +37,19 @@ def get_note(note_id):
     note = Note.query.get_or_404(note_id)
     author = db.session.execute(db.select(User).filter_by(id=note.author_id)).fetchone()
 
-    print(note)
+    print(author)
 
     return render_template("note_view.html", note=note, author=author)
 
 
 @notes_bp.route("/delete/<int:note_id>")
 @login_required
+@admin_required
 def delete_note(note_id):
     note = Note.query.get_or_404(note_id)
 
     db.session.delete(note)
     db.session.commit()
-
-    print("Deleted note")
 
     return redirect(url_for("notes.index"))
 
@@ -64,7 +64,32 @@ def notes_view():
 @login_required
 def index():
     notes = db.session.execute(db.select(Note).order_by(Note.title)).fetchall()
-    print(notes)
     size = len(notes)
 
     return render_template("index.html", notes=notes, size=size)
+
+
+@notes_bp.route("/notes/<int:note_id>/edit", methods=["POST", "GET"])
+@login_required
+def edit_note(note_id):
+    note = Note.query.get_or_404(note_id)
+
+    if request.method == "POST":
+        title = request.form["title"]
+        content = request.form["content"]
+        error = None
+
+        if not title:
+            error = "title is required"
+        elif not content:
+            error = "content is required"
+
+        if error is None:
+            note.title = title
+            note.body = content
+
+            db.session.commit()
+
+            return redirect(url_for("notes.index"))
+
+    return render_template("edit_note.html", note=note)
