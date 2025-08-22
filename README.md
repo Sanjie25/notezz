@@ -37,3 +37,18 @@ SQLALCHEMY_DATABASE_URI=mysql+pymysql://super_user:password@localhost/notezz
 
 - Install the libraries with `pip install -r requirements.txt`
 - Then run the app with `python run.py`
+
+# Libraries used
+
+*Python:*
+- Flask
+- SQLAlchemy
+- Flask_login
+- Flask_SQLAlchemy
+- Werkzeug
+
+# My Details
+
+**Name:** Sanjeev Yadav
+**Branch:** CSE(DS)
+**Student No:** 24154036
