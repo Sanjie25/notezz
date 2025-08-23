@@ -65,13 +65,13 @@ def login():
         return error_response("Incorrect password or username.", 401)
 
     except ValidationError as err:
-        return error_response(message=err.messages)
+        return error_response(message=err.messages, status_code=400)
 
 
 @auth_bp.route("/logout", methods=["POST"])
 def logout():
     logout_user()
-    return success_response(None, message="Logout successful")
+    return success_response(None, message="Logout successful", status_code=200)
 
 
 def admin_required(view):
@@ -86,7 +86,7 @@ def admin_required(view):
     return wrapped_view
 
 
-@auth_bp.route("/add_collab", methods=["GET", "POST"])
+@auth_bp.route("/add_collab", methods=["POST"])
 @admin_required
 def add_collaborator():
     try:
@@ -108,7 +108,7 @@ def add_collaborator():
 
         return success_response(add_collabo.dump(new_invite), "User Invited", 200)
     except ValidationError as err:
-        return error_response(message=err.message)
+        return error_response(message=err.message, status_code=400)
     except Exception as e:
         return error_response("Invite failed", 500)
 
@@ -117,7 +117,9 @@ def add_collaborator():
 @login_required
 def check_auth():
     return success_response(
-        data=user_schema.dump(current_user), message="User is authenticated"
+        data=user_schema.dump(current_user),
+        message="User is authenticated",
+        status_code=200,
     )
 
 
@@ -125,5 +127,7 @@ def check_auth():
 @login_required
 def get_profile():
     return success_response(
-        data=user_schema.dump(current_user), message="Profile retrieved"
+        data=user_schema.dump(current_user),
+        message="Profile retrieved",
+        status_code=200,
     )

@@ -196,3 +196,33 @@ curl -X DELETE http://127.0.0.1:12345/notes/1/delete \
 -b my_cookies.txt \
 
 ```
+
+## Delete a note using it's title
+
+Send a DELETE request to `http://127.0.0.1:12345/notes/delete_by_title` with the field of `title` only
+
+```
+
+curl -X DELETE http://127.0.0.1:12345/notes/delete_by_title \
+-H "Content-Type: application/json" \
+-c my_cookies.txt \
+-b my_cookies.txt \
+-d '{"title": "note title"}'
+
+```
+
+# Authorisation Error due to cookies
+
+it might look something like this,
+
+```
+
+<!doctype html>
+<html lang=en>
+<title>Redirecting...</title>
+<h1>Redirecting...</h1>
+<p>You should be redirected automatically to the target URL: <a href="/auth/login?next=%2Fauth%2Fcheck-auth">/auth/login?next=%2Fauth%2Fcheck-auth</a>. If not, click the link.
+
+```
+
+in curl

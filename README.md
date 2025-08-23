@@ -66,7 +66,9 @@ For ref: refer to: <https://dev.mysql.com/doc/refman/8.4/en/installing.html>
 
 *On windows*
 
--
+- Go to <https://dev.mysql.com/downloads/installer/> and download the installer
+- Run the installer and follow the installation steps
+- Run the sql setup commands in mysql unicode shell
 
 ### Installing the python libraries inside the virtual environment
 

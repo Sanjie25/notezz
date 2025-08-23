@@ -1,7 +1,7 @@
 from sqlalchemy.orm import load_only
 from api.main import ma
 from marshmallow import fields, validate, pre_load, post_load
-from api.database_models import Invited, Note, User
+from api.database_models import Invited, Note, Tag, User
 
 
 class UserSchema(ma.SQLAlchemyAutoSchema):
@@ -46,6 +46,14 @@ class InvitedSchema(ma.SQLAlchemyAutoSchema):
     id = ma.auto_field(dump_only=True)
     username = ma.auto_field(required=True, validate=validate.Length(min=3, max=80))
     created_at = ma.auto_field(dump_only=True)
+
+
+# class TagSchema(ma.SQLAlchemyAutoSchema):
+#     class Meta:
+#         model Tag
+#         load_instance = True
+#
+#     id = ma.auto_field(dump_only=True)
 
 
 class LoginSchema(ma.Schema):
