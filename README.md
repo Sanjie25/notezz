@@ -2,6 +2,76 @@
 
 A note-taking app made with Flask
 
+# Setup
+
+## Installing Libraries and Dependencies
+
+Run the following commands in terminal
+
+*Setting up virtual environment*
+
+- `python3 -m venv .venv`
+- `source .venv/bin/activate`
+
+### Installing and running mysql
+
+For ref: refer to: <https://dev.mysql.com/doc/refman/8.4/en/installing.html>
+
+*On MacOS(with homebrew)*
+
+- `brew install mysql`
+- `brew services start mysql`
+- `brew services list`
+
+*On Linux*
+
+- on Debian, Ubuntu and their derivatives
+  - Go to <https://dev.mysql.com/downloads/>
+  - Download mysql-apt-config_w.x.y-z_all.deb file.(artibrary values for version)
+  - Run `sudo dpkg -i /PATH/version-specific-package-name.deb` according to file location. For e.g. if in same folder, `sudo dpkg -i mysql-apt-config_w.x.y-z_all.deb`
+  - Update the MySQL APT repo information with `sudo apt-get update`
+  - Install mysql-server with `sudo apt-get install mysql-server`
+  - Check mysql status with `systemctl status mysql`
+  - Start mysql with `systemctl start mysql`
+
+- On Fedora, RHEL and their derivatives
+  - Go to <https://dev.mysql.com/downloads/repo/yum/> and download suitable package file
+  - Install the download RPM package with `sudo yum localinstall mysql84-community-release-{platform}-{version-number}.noarch.rpm`
+  - Check if it's installed with:
+
+    ```
+    yum repolist enabled | grep mysql.*-community
+    ```
+
+    Expected output:
+
+    ```
+    mysql-8.4-lts-community               MySQL 8.4 LTS Community Server
+    mysql-tools-8.4-lts-community            MySQL Tools 8.4 LTS Community
+    ```
+
+  - Disabling the default MySQL module present in RHEL distros with:
+
+    `sudo yum module disable mysql`
+
+  - Install mysql with `sudo yum install mysql-community-server`
+
+  - Start mysql server with `sudo systemctl start mysql`
+  - Check status with `systemctl status mysql`
+
+- On Arch Linux and its derivatives
+  - Install with pacman - `sudo pacman -S mariadb`
+  - Start the server with `sudo systemctl start mysql`
+  - Check status with `systemctl status mysql`
+
+*On windows*
+
+-
+
+### Installing the python libraries inside the virtual environment
+
+- Install the libraries with `pip install -r requirements.txt`
+
 # Setting up database
 
 ```
@@ -35,17 +105,20 @@ SQLALCHEMY_DATABASE_URI=mysql+pymysql://super_user:password@localhost/notezz
 
 # Running the app
 
-- python3 -m venv .venv
-- source .venv/bin/activate
-- brew install mysql
-- brew services start mysql
-- brew services list
-- Install the libraries with `pip install -r requirements.txt`
-- Then run the app with `python run.py`
+- run the app with `python run.py`
+
+# Running the api
+
+- run the api with `python run_api.py`
+
+## API Reference
+
+  Check the [api reference](https://github.com/Sanjie25/notezz/blob/main/API_REF.md) for Request and Response formats.
 
 # Libraries used
 
 *Python:*
+
 - Flask
 - SQLAlchemy
 - Flask_login
@@ -55,5 +128,9 @@ SQLALCHEMY_DATABASE_URI=mysql+pymysql://super_user:password@localhost/notezz
 # My Details
 
 **Name:** Sanjeev Yadav
+
 **Branch:** CSE(DS)
+
 **Student No:** 24154036
+
+**Roll No:** 2400271540108

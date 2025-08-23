@@ -6,7 +6,7 @@ from api.blueprints import admin_required
 from api.responses import error_response, success_response
 from api.schemas import note_schema
 
-notes_bp = Blueprint("notes", __name__)
+notes_bp = Blueprint("notes", __name__, url_prefix="/notes")
 
 
 @notes_bp.route("/create", methods=["POST"])
@@ -34,14 +34,14 @@ def create_note():
         return error_response(f"Failed to create note: {e}", 400)
 
 
-@notes_bp.route("/notes/<int:note_id>", methods=["GET"])
+@notes_bp.route("/<int:note_id>", methods=["GET"])
 def get_note(note_id):
     note = Note.query.get_or_404(note_id)
 
     return success_response(data=note_schema.dump(note))
 
 
-@notes_bp.route("/notes/all", methods=["GET"])
+@notes_bp.route("/all", methods=["GET"])
 def get_all_note():
     notes = db.session.execute(db.select(Note)).fetchall()
     result = {}
@@ -55,7 +55,7 @@ def get_all_note():
     return success_response(data=result)
 
 
-@notes_bp.route("/delete/<int:note_id>", methods=["DELETE"])
+@notes_bp.route("/<int:note_id>/delete", methods=["DELETE"])
 @login_required
 @admin_required
 def delete_note(note_id):
@@ -67,7 +67,7 @@ def delete_note(note_id):
     return success_response(None, "")
 
 
-@notes_bp.route("/notes/<int:note_id>/edit", methods=["PUT"])
+@notes_bp.route("/<int:note_id>/edit", methods=["PUT"])
 @login_required
 def edit_note(note_id):
     try:

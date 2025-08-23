@@ -1,3 +1,4 @@
+from sqlalchemy.orm import load_only
 from api.main import ma
 from marshmallow import fields, validate, pre_load, post_load
 from api.database_models import Invited, Note, User
@@ -10,10 +11,10 @@ class UserSchema(ma.SQLAlchemyAutoSchema):
 
     id = ma.auto_field(dump_only=True)
     username = ma.auto_field(required=True, validate=validate.Length(min=3, max=80))
-    password = fields.Str(
+    role = ma.auto_field(required=True)
+    password_hash = fields.Str(
         required=True, load_only=True, validate=validate.Length(min=6)
     )
-    role = ma.auto_field(validate=validate.OneOf(["admin", "collaborator"]))
     created_at = ma.auto_field(dump_only=True)
 
     @pre_load
@@ -34,7 +35,6 @@ class NoteSchema(ma.SQLAlchemyAutoSchema):
     author_id = ma.auto_field(dump_only=True)
     created_at = ma.auto_field(dump_only=True)
     updated_at = ma.auto_field(dump_only=True)
-    # tags = fields.List(fields.Str(), required=False)
     author = fields.Nested(UserSchema, only=("id", "username"), dump_only=True)
 
 

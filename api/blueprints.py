@@ -17,6 +17,12 @@ def register():
         if not data:
             return error_response("No data found", 400)
 
+        role = "collaborator"
+
+        if "role" in data.keys():
+            role = data["role"]
+            data.pop("role")
+
         validated_data = login_schema.load(data)
 
         if User.query.filter_by(username=validated_data["username"]).first():
@@ -25,18 +31,20 @@ def register():
         new_user = User(username=validated_data["username"])
 
         new_user.set_password(validated_data["password"])
+        new_user.role = role
 
         db.session.add(new_user)
+
         db.session.commit()
 
         login_user(new_user)
 
         return success_response(user_schema.dump(new_user), "User created")
     except ValidationError as err:
-        return error_response("ValidationError", 400)
+        return error_response(f"ValidationError: {err}", 400)
     except Exception as e:
         db.session.rollback()
-        return error_response(message="Registration failed")
+        return error_response(message=f"Registration failed{e}")
 
 
 @auth_bp.route("/login", methods=["POST"])
@@ -94,7 +102,7 @@ def add_collaborator():
 
         new_invite = Invited(username=validated_data["username"])
 
-        db.session.add(new_user)
+        db.session.add(new_invite)
 
         db.session.commit()
 
@@ -106,11 +114,16 @@ def add_collaborator():
 
 
 @auth_bp.route("/check-auth", methods=["GET"])
+@login_required
 def check_auth():
-    return success_response(user_schema.dump(current_user), "User is authenticated")
+    return success_response(
+        data=user_schema.dump(current_user), message="User is authenticated"
+    )
 
 
 @auth_bp.route("/profile", methods=["GET"])
 @login_required
 def get_profile():
-    return success_response(user_schema.dump(current_user), "Profile retrieved")
+    return success_response(
+        data=user_schema.dump(current_user), message="Profile retrieved"
+    )

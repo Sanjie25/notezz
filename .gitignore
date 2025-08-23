@@ -1,2 +1,5 @@
+testing/
 .venv/
 my_cookies.txt
+.gitignore
+

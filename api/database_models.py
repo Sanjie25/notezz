@@ -1,7 +1,6 @@
 from datetime import datetime
 from flask_login import UserMixin
 
-# from sqlalchemy import select
 from werkzeug.security import generate_password_hash, check_password_hash
 from api.main import db
 
@@ -59,18 +58,15 @@ class Tag(db.Model):
         return f"<Tag {self.name}>"
 
 
-note_tags = db.Table(
-    "note_tags",
-    db.Column("id", db.Integer, primary_key=True),
-    db.Column(
-        "note_id", db.Integer, db.ForeignKey("notes.id"), nullable=False, index=True
-    ),
-    db.Column(
-        "tag_id", db.Integer, db.ForeignKey("tags.id"), nullable=False, index=True
-    ),
-    db.Column("created_at", db.DateTime, default=datetime.now),
-    db.UniqueConstraint("note_id", "tag_id", name="unique_note_tag"),
-)
+class Note_Tags(db.Model):
+    __tablename__ = "note_tags"
+
+    id = db.Column(db.Integer, primary_key=True)
+    note_id = db.Column(
+        db.Integer, db.ForeignKey("notes.id"), nullable=False, index=True
+    )
+    tag_id = db.Column(db.Integer, db.ForeignKey("tags.id"), nullable=True, index=True)
+    created_at = db.Column(db.DateTime, default=datetime.now)
 
 
 class User(db.Model, UserMixin):
