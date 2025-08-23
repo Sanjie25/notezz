@@ -17,8 +17,6 @@ def create_note():
         if not data:
             return error_response("No data provided", 400)
 
-        print(data)
-
         new_note = Note(
             title=data["title"],
             body=data["body"],
@@ -49,7 +47,6 @@ def get_all_note():
 
     for note in notes:
         result[n] = note_schema.dump(note[0])
-        print(note[0])
         n += 1
 
     return success_response(data=result)
